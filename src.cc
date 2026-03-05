@@ -1,9 +1,10 @@
 #include "libFK.hh"
 #include "src.hh"
 #include <iostream>
-#include <bits/stdc++.h>
 #include <string>
 #include <filesystem>
+#include <stdio.h>
+#include <unistd.h>
 
 namespace fs = std::filesystem;
 
@@ -31,46 +32,47 @@ void src::outputNeededLibraries(const std::string file, std::string librariesOut
             fk::writeDataToFile(librariesOutput,library, true); // Output needed libraries
             searchLibraryPath = "/usr/include/c++/13/" + library;   // TODO: Replace hardcoded value
             if (fileExists(searchLibraryPath)) {   // Get and write found libraries
-                fk::msg(1, "Library " + library + " found at: " + searchLibraryPath);
+                // fk::msg(1, "Library " + library + " found at: " + searchLibraryPath); // DEBUG
                 fk::writeDataToFile(foundLibrariesList, library ,true);
             } else {
                 fk::writeDataToFile(notFoundLibrariesList, library ,true);
-                searchLibraryPath = "/usr/include/" + library;
+                searchLibraryPath = "/usr/local/include/" + library;
                 if (fileExists(searchLibraryPath)) {
-                    fk::msg(1, "Library " + library + " found at: " + searchLibraryPath);
+                    // DEBUG fk::msg(1, "Library " + library + " found at: " + searchLibraryPath); // DEBUG
                     fk::writeDataToFile(foundLibrariesList, library,true);
+                    // DEBUG fk::msg(1, "1 - found " + library + " at " + searchLibraryPath); // DEBUG
                 } else {
                     fk::writeDataToFile(notFoundLibrariesList, library,true);
+                    // DEBUG fk::msg(1, "1 - not found " + library); // DEBUG
                 }
             }
         }
     }
-    fk::msg(1, "Missing libraries were saved.");
+    //fk::msg(1, "Missing libraries were saved."); // DEBUG
 }
 
 void src::generateBuildCommand(std::string buildFlagsPath) {
     std::string allBuildFlags = fk::readDataFromFile(buildFlagsPath);
-    std::string compiler = "gcc ";
+    std::string compiler = "clang ";
     std::string inputFile = "example.cc ";
     std::string outputFileName = "a.out";
     std::string buildCommand = compiler + inputFile + "-lstdc++" + allBuildFlags + " -o " + outputFileName;
-    fk::msg(1, "Compiling program!");
-    fk::msg(0, buildCommand);
+    fk::msg(1, "Compiling the program!");
+    //fk::msg(0, buildCommand); // DEBUG
     system(buildCommand.c_str());
 }
 
 void src::runCompiledProgram() {
-    system("./a.out &");
-    fk::msg(1, "Running compiled program!");
+    fk::msg(1, "Running the compiled program!");
+    system("./a.out");
 }
 
 void src::handleBuildingAndRunningTheProgram(std::string runLibraryInstallScripts, std::string buildFlagsPath) {
-    std::string passwd;
-    fk::msg(0, runLibraryInstallScripts);
-    std::cout << "Enter the password: ";
-    getline( std::cin, passwd );
-    std::string cmd = "echo " + passwd + " | sudo -S chmod +x " + runLibraryInstallScripts + " && bash " + runLibraryInstallScripts;
-    system( "ls ../");
+    // Get password to be able to run commands inside the bash script using sudo
+    //char *tempPassword;
+    //tempPassword = getpass("Enter password: ");
+    //std::string password = tempPassword;
+    std::string cmd = "sudo -S chmod +x " + runLibraryInstallScripts + " && sudo -S bash " + runLibraryInstallScripts + " > /dev/null 2>&1";
     system(cmd.c_str());
     generateBuildCommand(buildFlagsPath);
     runCompiledProgram();
@@ -78,9 +80,9 @@ void src::handleBuildingAndRunningTheProgram(std::string runLibraryInstallScript
 
 void src::generateInstallScript(std::string foundLibraries) {
     std::vector<std::string> library = fk::readFileLines(foundLibraries);
-    std::vector<std::string> availableLibrariesToBeInstalled = fk::readFileLines("../src/availableLibs.txt");
-    std::string availableLibraryBuildFlags = "../src/libraryBuildFlags";
-    std::string buildScriptsDir = "../src/libraryBuildScripts/";
+    std::vector<std::string> availableLibrariesToBeInstalled = fk::readFileLines("../availableLibs.txt");
+    std::string availableLibraryBuildFlags = "../libraryBuildFlags";
+    std::string buildScriptsDir = "../libraryBuildScripts/";
     std::string buildFlagsPath = "out/buildFlags.txt";
     std::string buildScriptPath = buildScriptsDir + "0" + ".sh";
     std::string runLibraryInstallScripts = "out/runLibraryInstallScripts.sh";
@@ -88,8 +90,8 @@ void src::generateInstallScript(std::string foundLibraries) {
         for (size_t j = 0; j < availableLibrariesToBeInstalled.size(); ++j) {
             if (library[i] == availableLibrariesToBeInstalled[j]) {
                 buildScriptPath = buildScriptsDir + std::to_string(j+1) + ".sh";
-                std::string temp = library[i] + " build script match found at: " + "\"" + buildScriptPath + "\"";
-                fk::msg(1, temp);
+                // DEBUG std::string temp = library[i] + " build script match found at: " + "\"" + buildScriptPath + "\""; // DEBUG
+                // debug fk::msg(1, temp); // debug
                 fk::writeDataToFile(runLibraryInstallScripts, buildScriptPath, true);
                 std::string buildFlagsFile = availableLibraryBuildFlags + "/" + std::to_string(j+1) + ".txt";
                 std::string buildFlagsFileData = " " + fk::readDataFromFile(buildFlagsFile);

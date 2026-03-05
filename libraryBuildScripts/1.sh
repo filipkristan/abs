@@ -1,1 +1,17 @@
-sudo apt-get install xorg-dev libglfw3-dev libwayland-dev libxkbcommon-dev wayland-protocols extra-cmake-modules -y
+#!/bin/bash
+
+depriv() {
+  if [[ $SUDO_USER ]]; then
+    sudo -u "$SUDO_USER" -- "$@"
+  else
+    "$@"
+  fi
+}
+
+rm -rf glfw-3.4*
+depriv curl https://github.com/glfw/glfw/releases/download/3.4/glfw-3.4.zip -L -O -J
+depriv unzip glfw-3.4.zip
+depriv mkdir /usr/local/include
+rm -rf /usr/local/include/GLFW
+mv glfw-3.4/include/GLFW /usr/local/include/
+rm -rf glfw-3.4* > /dev/null
