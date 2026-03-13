@@ -31,10 +31,8 @@ void src::outputNeededLibraries(const std::string file, std::string librariesOut
             searchLibraryPath = "/usr/local/include/" + library;
             if (fileExists(searchLibraryPath)) {
                 fk::writeDataToFile(foundLibrariesList, library,true);
-                std::cout << "Found library: " << library << std::endl;
             } else {
                 fk::writeDataToFile(notFoundLibrariesList, library,true);
-                std::cout << "Missing library: " << library << std::endl;
             }
         }
     }
@@ -63,8 +61,8 @@ void src::runCompiledProgram() {
 
 void src::handleBuildingAndRunningTheProgram(std::string runLibraryInstallScripts, std::string buildFlagsPath,  int argc, char* argv) {
     if (fileExists(runLibraryInstallScripts)) {
+        system("sudo -S chmod -R a+rx /usr/local/share/abs/res");
         std::string cmd = "sudo -S chmod +x " + runLibraryInstallScripts + " && sudo -S bash " + runLibraryInstallScripts;
-        std::cout << "Run library install scripts: " << cmd << std::endl;
         system(cmd.c_str());
         generateBuildCommand(buildFlagsPath, argc, argv);
     }
@@ -73,9 +71,9 @@ void src::handleBuildingAndRunningTheProgram(std::string runLibraryInstallScript
 
 void src::generateInstallScript(std::string foundLibraries) {
     std::vector<std::string> library = fk::readFileLines(foundLibraries);
-    std::vector<std::string> availableLibrariesToBeInstalled = fk::readFileLines("../res/availableLibs.txt");
-    std::string availableLibraryBuildFlags = "../res/libraryBuildFlags";
-    std::string buildScriptsDir = "../res/libraryBuildScripts/";
+    std::vector<std::string> availableLibrariesToBeInstalled = fk::readFileLines("/usr/local/share/abs/res/availableLibs.txt");
+    std::string availableLibraryBuildFlags = "/usr/local/share/abs/res/libraryBuildFlags";
+    std::string buildScriptsDir = "/usr/local/share/abs/res/libraryBuildScripts/";
     std::string buildFlagsPath = "out/buildFlags.txt";
     std::string buildScriptPath = buildScriptsDir + "0" + ".sh";
     std::string runLibraryInstallScripts = "out/runLibraryInstallScripts.sh";
