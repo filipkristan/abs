@@ -10,3 +10,9 @@ add_executable(abs
         src.cc
         src.hh
 )
+
+set(RESOURCES_DIR "${CMAKE_INSTALL_PREFIX}/share/abs/res")
+
+install(TARGETS abs DESTINATION /usr/local/bin)
+
+install(DIRECTORY res/ DESTINATION ${RESOURCES_DIR})

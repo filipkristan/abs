@@ -73,9 +73,9 @@ void src::handleBuildingAndRunningTheProgram(std::string runLibraryInstallScript
 
 void src::generateInstallScript(std::string foundLibraries) {
     std::vector<std::string> library = fk::readFileLines(foundLibraries);
-    std::vector<std::string> availableLibrariesToBeInstalled = fk::readFileLines("../availableLibs.txt");
-    std::string availableLibraryBuildFlags = "../libraryBuildFlags";
-    std::string buildScriptsDir = "../libraryBuildScripts/";
+    std::vector<std::string> availableLibrariesToBeInstalled = fk::readFileLines("../res/availableLibs.txt");
+    std::string availableLibraryBuildFlags = "../res/libraryBuildFlags";
+    std::string buildScriptsDir = "../res/libraryBuildScripts/";
     std::string buildFlagsPath = "out/buildFlags.txt";
     std::string buildScriptPath = buildScriptsDir + "0" + ".sh";
     std::string runLibraryInstallScripts = "out/runLibraryInstallScripts.sh";
