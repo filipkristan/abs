@@ -57,7 +57,7 @@ void src::runCompiledProgram() {
     printProgressBar(95,100,0);
     if (fileExists("./a.out")) {
         fk::msg(1, "Running the compiled program!");
-        system("./a.out");
+        system("export DYLD_LIBRARY_PATH=/usr/local/lib && ./a.out");
     } else {
         fk::msg(3, "Program not compiled, missing file.");
     }
