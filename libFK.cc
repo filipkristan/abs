@@ -1,11 +1,8 @@
 #include "libFK.hh"
-
-#include <array>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <algorithm>
 #include <string>
 
 void fk::msg(int level, std::string message)
