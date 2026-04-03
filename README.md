@@ -1,6 +1,6 @@
-# ABS
+# C++ Build System
 
-ABS automatically finds and installs the needed libraries.  
+This program automatically finds and installs the needed libraries.  
 It also builds the C++ projects using generated build flags.
 
 # Installation:
@@ -12,9 +12,9 @@ sudo cmake --build cmake-build-debug --target install
 
 # Usage:
 ```bash
-abs <PATH>
+bs <PATH>
 ```
 Example:
 ```bash
-abs raylib-demo.cpp
+bs raylib-demo.cpp
 ```
