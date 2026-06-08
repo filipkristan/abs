@@ -1,6 +1,5 @@
 #include "libFK.hh"
 #include "src.hh"
-#include "progressBar.hh"
 #include <iostream>
 #include <string>
 #include <filesystem>

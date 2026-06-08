@@ -9,8 +9,6 @@ add_executable(bs
         src/misc/libFK.hh
         src/misc/src.cc
         src/misc/src.hh
-        src/misc/progressBar.cc
-        src/misc/progressBar.hh
 )
 
 set(RESOURCES_DIR "${CMAKE_INSTALL_PREFIX}/share/bs/res")
