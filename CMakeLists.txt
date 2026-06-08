@@ -4,13 +4,13 @@ project(bs)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(bs
-        main.cc
-        libFK.cc
-        libFK.hh
-        src.cc
-        src.hh
-        progressBar.cc
-        progressBar.hh
+        src/main.cc
+        src/misc/libFK.cc
+        src/misc/libFK.hh
+        src/misc/src.cc
+        src/misc/src.hh
+        src/misc/progressBar.cc
+        src/misc/progressBar.hh
 )
 
 set(RESOURCES_DIR "${CMAKE_INSTALL_PREFIX}/share/bs/res")
