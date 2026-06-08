@@ -5,10 +5,12 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(bs
         src/main.cc
-        src/misc/libFK.cc
-        src/misc/libFK.hh
-        src/misc/src.cc
-        src/misc/src.hh
+        src/misc/Build.cc
+        src/misc/Build.hh
+        src/misc/Message.cc
+        src/misc/Message.hh
+        src/misc/File.cc
+        src/misc/File.hh
 )
 
 set(RESOURCES_DIR "${CMAKE_INSTALL_PREFIX}/share/bs/res")
